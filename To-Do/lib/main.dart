@@ -38,6 +38,7 @@ class _TodoHomePageState extends State<TodoHomePage> {
   final List<Task> tasks = [];
   final TextEditingController controller = TextEditingController();
   String filter = "All";
+
   void addTask(String title, String priority) {
     setState(() {
       tasks.add(Task(title: title.trim(), priority: priority));
@@ -134,16 +135,11 @@ class _TodoHomePageState extends State<TodoHomePage> {
                         setDialog(() => errorMsg = "Enter a task name");
                         return;
                       }
-                      setState(() {
-                        tasks.add(
-                          Task(title: controller.text, priority: priority),
-                        );
-                        sortByPriority();
-                      });
+                      addTask(controller.text, priority);
                       setDialog(() {
-                        controller.clear();
                         errorMsg = null;
                         taskAdded = true;
+                        priority = "Medium";
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -175,12 +171,6 @@ class _TodoHomePageState extends State<TodoHomePage> {
       appBar: AppBar(
         title: const Text("To-Do"),
         backgroundColor: Colors.black87,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.sort),
-            onPressed: () => setState(sortByPriority),
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -205,7 +195,7 @@ class _TodoHomePageState extends State<TodoHomePage> {
             child: filteredTasks.isEmpty
                 ? const Center(
                     child: Text(
-                      "No tasks yet",
+                      "No Tasks",
                       style: TextStyle(color: Colors.white54, fontSize: 18),
                     ),
                   )
@@ -269,7 +259,7 @@ class _TodoHomePageState extends State<TodoHomePage> {
             padding: EdgeInsets.all(10),
             child: Text(
               "Made by Adel Naim",
-              style: TextStyle(color: Colors.white60),
+              style: TextStyle(color: Color.fromARGB(153, 236, 96, 15)),
             ),
           ),
         ],
